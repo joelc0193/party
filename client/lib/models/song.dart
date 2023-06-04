@@ -10,9 +10,9 @@ class Song {
   // Add this method to your Song class
   factory Song.fromJson(Map<String, dynamic> json) {
     return Song(
-      id: json['id'],
-      title: json['title'],
-      artist: json['artist'],
+      id: json['id'].toString(),
+      title: json['title'] as String,
+      artist: json['artist'].toString(),
     );
   }
 }

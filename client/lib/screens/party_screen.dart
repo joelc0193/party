@@ -37,6 +37,7 @@ class _PartyScreenState extends State<PartyScreen> {
   void updateSearchQuery(String newQuery) async {
     searchQuery = newQuery;
     searchResults = await songManagement.searchSongs(newQuery);
+    setState(() {}); 
   }
 
   void nominateSong(Song song) {
