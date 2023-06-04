@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import '../models/party.dart';
 import '../models/song.dart';
@@ -50,8 +52,8 @@ class _PartyScreenState extends State<PartyScreen> {
 
   Timer? songTimer;
   Song? currentSong;
-  Duration songDuration;
-  Duration elapsedTime;
+  Duration songDuration = Duration.zero;
+  Duration elapsedTime = Duration.zero;
 
   @override
   void initState() {
