@@ -12,6 +12,19 @@ class PartyScreen extends StatefulWidget {
 }
 
 class _PartyScreenState extends State<PartyScreen> {
+  List<Song> songs = [
+    Song(id: '1', title: 'Song 1', artist: 'Artist 1'),
+    Song(id: '2', title: 'Song 2', artist: 'Artist 2'),
+    // Add more songs here...
+  ];
+
+  List<Song> searchSongs(String query) {
+    return songs.where((song) {
+      return song.title.toLowerCase().contains(query.toLowerCase()) ||
+             song.artist.toLowerCase().contains(query.toLowerCase());
+    }).toList();
+  }
+  
   String searchQuery = '';
   List<Song> searchResults = [];
 
@@ -37,20 +50,15 @@ class _PartyScreenState extends State<PartyScreen> {
             ),
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: searchResults.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(searchResults[index].title),
-                  subtitle: Text(searchResults[index].artist),
-                  trailing: Text('${searchResults[index].votes} votes'),
-                  onTap: () {
-                    // Increment the vote count for the song
-                  },
-                );
-              },
-            ),
-          ),
+              child: ListView.builder(
+            itemCount: searchResults.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(searchResults[index].title),
+                subtitle: Text(searchResults[index].artist),
+              );
+            },
+          ))
         ],
       ),
     );

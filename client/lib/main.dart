@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:party/models/song.dart';
 import 'screens/main_screen.dart'; // Make sure to use the correct path
 
 void main() {
