@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import '../models/party.dart';
-import 'party_screen.dart';
+import 'package:party/api.dart';
 
 class CreatePartyScreen extends StatefulWidget {
   @override
-  CreatePartyScreenState createState() => CreatePartyScreenState();
+  _CreatePartyScreenState createState() => _CreatePartyScreenState();
 }
 
-class CreatePartyScreenState extends State<CreatePartyScreen> {
+class _CreatePartyScreenState extends State<CreatePartyScreen> {
   final _formKey = GlobalKey<FormState>();
-  String _partyName = '';
+  final _partyNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,45 +16,35 @@ class CreatePartyScreenState extends State<CreatePartyScreen> {
       appBar: AppBar(
         title: Text('Create a Party'),
       ),
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Party Name'),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'Please enter a name for the party';
-                }
-                return null;
-              },
-              onSaved: (value) {
-                _partyName = value!;
-              },
-            ),
-            ElevatedButton(
-              child: Text('Create Party'),
-              onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PartyScreen(
-                        party: Party(
-                          id: 'placeholder_id', // Replace with the actual party id
-                          name: _partyName,
-                          owner:
-                              'Owner Name', // Replace with the actual owner name
-                          songs: [], // Replace with the actual list of songs
-                        ),
-                      ),
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                controller: _partyNameController,
+                decoration: InputDecoration(
+                  labelText: 'Party Name',
+                ),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter a party name';
+                  }
+                  return null;
+                },
+              ),
+              ElevatedButton(
+                child: Text('Create Party'),
+                onPressed: () async {
+                  if (_formKey.currentState?.validate() ?? false) {
+                    await Api.createParty(_partyNameController.text);
+                    Navigator.pop(context);
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
