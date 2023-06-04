@@ -42,6 +42,64 @@ class _PartyScreenState extends State<PartyScreen> {
     });
   }
 
+  void voteForSong(Song song) {
+    setState(() {
+      song.votes++;
+    });
+  }
+
+  Timer? songTimer;
+  Song? currentSong;
+  Duration songDuration;
+  Duration elapsedTime;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Initialize songDuration and elapsedTime
+    songDuration = Duration(minutes: 3); // Assume a 3-minute song for now
+    elapsedTime = Duration.zero;
+
+    // Start the song timer
+    startSongTimer();
+  }
+
+  void startSongTimer() {
+    songTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      setState(() {
+        elapsedTime += Duration(seconds: 1);
+
+        if (elapsedTime.inSeconds >= (songDuration.inSeconds / 2) &&
+            elapsedTime.inSeconds < (songDuration.inSeconds * 3 / 4)) {
+          // Open nomination period
+        } else if (elapsedTime.inSeconds >= (songDuration.inSeconds * 3 / 4)) {
+          // Close nomination period and open voting period
+        } else if (elapsedTime >= songDuration) {
+          // Close voting period and determine next song
+          timer.cancel();
+          determineNextSong();
+        }
+      });
+    });
+  }
+
+  void determineNextSong() {
+    // Determine the next song based on votes
+
+    // Reset elapsedTime
+    elapsedTime = Duration.zero;
+
+    // Start the song timer again
+    startSongTimer();
+  }
+
+  @override
+  void dispose() {
+    songTimer?.cancel();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,19 +115,30 @@ class _PartyScreenState extends State<PartyScreen> {
             ),
           ),
           Expanded(
-              child: ListView.builder(
-            itemCount: searchResults.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(searchResults[index].title),
-                subtitle: Text(searchResults[index].artist),
-                trailing: ElevatedButton(
-                  child: Text('Nominate'),
-                  onPressed: () => nominateSong(searchResults[index]),
-                ),
-              );
-            },
-          ))
+            child: ListView.builder(
+              itemCount: searchResults.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(searchResults[index].title),
+                  subtitle: Text(searchResults[index].artist),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ElevatedButton(
+                        child: Text('Nominate'),
+                        onPressed: () => nominateSong(searchResults[index]),
+                      ),
+                      SizedBox(width: 8),
+                      ElevatedButton(
+                        child: Text('Vote'),
+                        onPressed: () => voteForSong(searchResults[index]),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          )
         ],
       ),
     );
