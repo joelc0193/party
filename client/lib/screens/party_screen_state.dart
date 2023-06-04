@@ -1,22 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:party/api_service.dart';
-import '../models/party.dart';
+import 'package:party/screens/party_screen.dart';
+import 'package:party/screens/song_management.dart';
+import 'package:party/screens/timer_management.dart';
+
 import '../models/song.dart';
-import 'song_management.dart';
-import 'timer_management.dart';
 import 'party_screen_ui.dart';
 
-class PartyScreen extends StatefulWidget {
-  final Party party;
-
-  PartyScreen({required this.party});
-
-  @override
-  _PartyScreenState createState() => _PartyScreenState();
-}
-
 class _PartyScreenState extends State<PartyScreen> {
-  final ApiService apiService = ApiService();
   final SongManagement songManagement = SongManagement();
   final TimerManagement timerManagement = TimerManagement();
   String searchQuery = '';

@@ -18,26 +18,22 @@ class ApiService {
     );
 
     if (response.statusCode == 200) {
-      // If the server returns a 200 OK response, then parse the JSON.
       print('Party created successfully');
     } else {
-      // If the server returns an unexpected response, then throw an exception.
       throw Exception('Failed to create party');
     }
   }
+
   Future<List<Song>> searchSongs(String query) async {
-    // Make a GET request to the Deezer API
     var response = await http.get(
       Uri.parse('https://api.deezer.com/search?q=$query'),
     );
 
-    // If the request was successful, parse the songs from the response
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       var items = data['data'] as List;
       return items.map((item) => Song.fromJson(item)).toList();
     } else {
-      // If the request was not successful, throw an error
       throw Exception('Failed to search songs');
     }
   }
