@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../models/party.dart';
 import '../models/song.dart';
 
+
 class PartyScreen extends StatefulWidget {
   final Party party;
 
@@ -34,7 +35,7 @@ class _PartyScreenState extends State<PartyScreen> {
   void updateSearchQuery(String newQuery) {
     setState(() {
       searchQuery = newQuery;
-      // TODO: Update searchResults based on the new query
+      searchResults = searchSongs(searchQuery);
     });
   }
 
@@ -75,8 +76,10 @@ class _PartyScreenState extends State<PartyScreen> {
         if (elapsedTime.inSeconds >= (songDuration.inSeconds / 2) &&
             elapsedTime.inSeconds < (songDuration.inSeconds * 3 / 4)) {
           // Open nomination period
+          // TODO: Change the state of the app to indicate that the nomination period is open
         } else if (elapsedTime.inSeconds >= (songDuration.inSeconds * 3 / 4)) {
           // Close nomination period and open voting period
+          // TODO: Change the state of the app to indicate that the voting period is open
         } else if (elapsedTime >= songDuration) {
           // Close voting period and determine next song
           timer.cancel();
@@ -87,7 +90,16 @@ class _PartyScreenState extends State<PartyScreen> {
   }
 
   void determineNextSong() {
-    // Determine the next song based on votes
+    // Sort the songs in descending order of votes
+    songs.sort((a, b) => b.votes.compareTo(a.votes));
+
+    // The next song is the one with the most votes
+    currentSong = songs[0];
+
+    // Reset votes for all songs
+    for (var song in songs) {
+      song.votes = 0;
+    }
 
     // Reset elapsedTime
     elapsedTime = Duration.zero;
@@ -128,12 +140,36 @@ class _PartyScreenState extends State<PartyScreen> {
                     children: [
                       ElevatedButton(
                         child: Text('Nominate'),
-                        onPressed: () => nominateSong(searchResults[index]),
+                        onPressed: () {
+                          if (elapsedTime.inSeconds >=
+                                  (songDuration.inSeconds / 2) &&
+                              elapsedTime.inSeconds <
+                                  (songDuration.inSeconds * 3 / 4)) {
+                            nominateSong(searchResults[index]);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Nominations are closed.'),
+                              ),
+                            );
+                          }
+                        },
                       ),
                       SizedBox(width: 8),
                       ElevatedButton(
                         child: Text('Vote'),
-                        onPressed: () => voteForSong(searchResults[index]),
+                        onPressed: () {
+                          if (elapsedTime.inSeconds >=
+                              (songDuration.inSeconds * 3 / 4)) {
+                            voteForSong(searchResults[index]);
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Voting has not started yet.'),
+                              ),
+                            );
+                          }
+                        },
                       ),
                     ],
                   ),
