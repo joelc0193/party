@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'main_screen.dart'; // Make sure to use the correct path
 
 void main() {
-  runApp(const MainApp());
+  runApp(PartyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class PartyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return MaterialApp(
+      title: 'Party App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
       ),
+      home: MainScreen(),
     );
   }
 }
