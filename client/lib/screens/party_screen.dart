@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import '../models/party.dart';
-import '../models/song.dart';
+import 'package:party/api.dart';
+import 'package:party/models/party.dart';
+import 'package:party/models/song.dart';
 
 class PartyScreen extends StatelessWidget {
   final Party party;
@@ -20,8 +21,14 @@ class PartyScreen extends StatelessWidget {
             title: Text(party.songs[index].title),
             subtitle: Text(party.songs[index].artist),
             trailing: Text('${party.songs[index].votes} votes'),
-            onTap: () {
-              // Increment the vote count for the song
+            onTap: () async {
+              try {
+                // Replace 'partyId' and 'songId' with the actual IDs
+                await Api.voteForSong(party.id, party.songs[index].id);
+              } catch (e) {
+                // Handle the error
+                print('Failed to vote for song: $e');
+              }
             },
           );
         },

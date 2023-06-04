@@ -30,6 +30,17 @@ app.post('/party/:partyId/transfer', (req, res) => {
   // TODO: Transfer ownership of the party to the new owner
   res.send({ message: `Ownership transferred to user ${newOwnerId}` });
 });
+app.post('/party/:partyId/nominate', (req, res) => {
+  const partyId = req.params.partyId;
+  const songId = req.body.songId;
+  // TODO: Add the song to the list of nominated songs for the party
+  res.send({ message: `Song ${songId} nominated for party ${partyId}` });
+});
+app.post('/party/:partyId/vote', (req, res) => {
+  const songId = req.body.songId;
+  // TODO: Cast a vote for the song
+  res.send({ message: `Vote cast for song ${songId}` });
+});
 
 app.listen(3000, () => {
   console.log('Server is running on port 3000');
