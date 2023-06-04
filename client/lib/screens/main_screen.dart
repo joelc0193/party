@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'create_party_screen.dart';
+import 'join_party_screen.dart';
 
 class MainScreen extends StatelessWidget {
   @override
@@ -14,13 +16,19 @@ class MainScreen extends StatelessWidget {
             ElevatedButton(
               child: Text('Create a Party'),
               onPressed: () {
-                // Navigate to the Create Party screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreatePartyScreen()),
+                );
               },
             ),
             ElevatedButton(
               child: Text('Join a Party'),
               onPressed: () {
-                // Navigate to the Join Party screen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => JoinPartyScreen()),
+                );
               },
             ),
           ],
