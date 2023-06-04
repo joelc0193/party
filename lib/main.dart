@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'main_screen.dart'; // Make sure to use the correct path
+import 'screens/main_screen.dart'; // Make sure to use the correct path
 
 void main() {
   runApp(PartyApp());
