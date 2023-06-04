@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:party/api_service.dart';
+
 import '../models/party.dart';
 import '../models/song.dart';
-
 
 class PartyScreen extends StatefulWidget {
   final Party party;
@@ -15,28 +18,42 @@ class PartyScreen extends StatefulWidget {
 }
 
 class _PartyScreenState extends State<PartyScreen> {
+  final ApiService apiService = ApiService();
   List<Song> songs = [
     Song(id: '1', title: 'Song 1', artist: 'Artist 1'),
     Song(id: '2', title: 'Song 2', artist: 'Artist 2'),
     // Add more songs here...
   ];
 
-  List<Song> searchSongs(String query) {
-    return songs.where((song) {
-      return !song.nominated &&
-          (song.title.toLowerCase().contains(query.toLowerCase()) ||
-              song.artist.toLowerCase().contains(query.toLowerCase()));
-    }).toList();
+  Future<List<Song>> searchSongs(String query) async {
+    final response = await http.get(
+      Uri.parse('https://api.deezer.com/search?q=$query'),
+    );
+
+    if (response.statusCode == 200) {
+      // If the server returns a 200 OK response,
+      // then parse the JSON.
+      final data = jsonDecode(response.body);
+      final List<Song> songs = [];
+      for (var item in data['data']) {
+        songs.add(Song.fromJson(item));
+      }
+      return songs;
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load songs');
+    }
   }
 
   String searchQuery = '';
   List<Song> searchResults = [];
 
-  void updateSearchQuery(String newQuery) {
+  void updateSearchQuery(String newQuery) async {
     setState(() {
       searchQuery = newQuery;
-      searchResults = searchSongs(searchQuery);
     });
+    searchResults = await apiService.searchSongs(newQuery);
   }
 
   void nominateSong(Song song) {

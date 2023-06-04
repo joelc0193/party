@@ -30,6 +30,4 @@ class DeezerApi {
       throw Exception('Failed to get access token');
     }
   }
-
-  // Add more methods for interacting with the Deezer API here...
 }
