@@ -2,12 +2,7 @@ class Song {
   final String id;
   final String title;
   final String artist;
-  int votes;
+  bool nominated;
 
-  Song({
-    required this.id,
-    required this.title,
-    required this.artist,
-    this.votes = 0,
-  });
+  Song({required this.id, required this.title, required this.artist, this.nominated = false});
 }

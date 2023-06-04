@@ -20,11 +20,12 @@ class _PartyScreenState extends State<PartyScreen> {
 
   List<Song> searchSongs(String query) {
     return songs.where((song) {
-      return song.title.toLowerCase().contains(query.toLowerCase()) ||
-             song.artist.toLowerCase().contains(query.toLowerCase());
+      return !song.nominated &&
+          (song.title.toLowerCase().contains(query.toLowerCase()) ||
+              song.artist.toLowerCase().contains(query.toLowerCase()));
     }).toList();
   }
-  
+
   String searchQuery = '';
   List<Song> searchResults = [];
 
@@ -32,6 +33,12 @@ class _PartyScreenState extends State<PartyScreen> {
     setState(() {
       searchQuery = newQuery;
       // TODO: Update searchResults based on the new query
+    });
+  }
+
+  void nominateSong(Song song) {
+    setState(() {
+      song.nominated = true;
     });
   }
 
@@ -56,6 +63,10 @@ class _PartyScreenState extends State<PartyScreen> {
               return ListTile(
                 title: Text(searchResults[index].title),
                 subtitle: Text(searchResults[index].artist),
+                trailing: ElevatedButton(
+                  child: Text('Nominate'),
+                  onPressed: () => nominateSong(searchResults[index]),
+                ),
               );
             },
           ))
