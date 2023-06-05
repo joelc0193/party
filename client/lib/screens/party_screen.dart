@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:party/api_service.dart';
 import '../models/party.dart';
 import '../models/song.dart';
+import 'nominate_song_screen.dart';
 import 'song_management.dart';
 import 'timer_management.dart';
 import 'party_screen_ui.dart';
@@ -9,7 +10,7 @@ import 'party_screen_ui.dart';
 class PartyScreen extends StatefulWidget {
   final Party party;
 
-  PartyScreen({required this.party});
+  const PartyScreen({super.key, required this.party});
 
   @override
   _PartyScreenState createState() => _PartyScreenState();
@@ -34,10 +35,19 @@ class _PartyScreenState extends State<PartyScreen> {
     super.dispose();
   }
 
+  bool isLoading = false;
+
   void updateSearchQuery(String newQuery) async {
+    setState(() {
+      isLoading = true;
+    });
+
     searchQuery = newQuery;
     searchResults = await songManagement.searchSongs(newQuery);
-    setState(() {}); 
+
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void nominateSong(Song song) {
@@ -50,16 +60,19 @@ class _PartyScreenState extends State<PartyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return PartyScreenUI(
-      party: widget.party,
-      songManagement: songManagement,
-      timerManagement: timerManagement,
-      updateSearchQuery: updateSearchQuery,
-      nominateSong: nominateSong,
-      voteForSong: voteForSong,
-      searchResults: searchResults,
-      elapsedTime: timerManagement.elapsedTime,
-      songDuration: timerManagement.songDuration,
-    );
+    return timerManagement.isNominationPeriod
+        ? NominateSongScreen(
+            searchResults: searchResults, nominateSong: nominateSong)
+        : PartyScreenUI(
+            party: widget.party,
+            songManagement: songManagement,
+            timerManagement: timerManagement,
+            updateSearchQuery: updateSearchQuery,
+            nominateSong: nominateSong,
+            voteForSong: voteForSong,
+            searchResults: searchResults,
+            elapsedTime: timerManagement.elapsedTime,
+            songDuration: timerManagement.songDuration,
+          );
   }
 }

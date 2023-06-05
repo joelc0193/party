@@ -15,7 +15,7 @@ class PartyScreenUI extends StatefulWidget {
   final Duration elapsedTime;
   final Duration songDuration;
 
-  PartyScreenUI({
+  const PartyScreenUI({super.key, 
     required this.party,
     required this.songManagement,
     required this.timerManagement,
@@ -32,6 +32,7 @@ class PartyScreenUI extends StatefulWidget {
 }
 
 class _PartyScreenUIState extends State<PartyScreenUI> {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -41,7 +42,7 @@ class _PartyScreenUIState extends State<PartyScreenUI> {
         children: [
           TextField(
             onChanged: widget.updateSearchQuery,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               labelText: 'Search for songs',
             ),
           ),
@@ -56,7 +57,7 @@ class _PartyScreenUIState extends State<PartyScreenUI> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ElevatedButton(
-                        child: Text('Nominate'),
+                        child: const Text('Nominate'),
                         onPressed: () {
                           if (widget.elapsedTime.inSeconds >=
                                   (widget.songDuration.inSeconds / 2) &&
@@ -65,23 +66,23 @@ class _PartyScreenUIState extends State<PartyScreenUI> {
                             widget.nominateSong(widget.searchResults[index]);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text('Nominations are closed.'),
                               ),
                             );
                           }
                         },
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       ElevatedButton(
-                        child: Text('Vote'),
+                        child: const Text('Vote'),
                         onPressed: () {
                           if (widget.elapsedTime.inSeconds >=
                               (widget.songDuration.inSeconds * 3 / 4)) {
                             widget.voteForSong(widget.searchResults[index]);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
+                              const SnackBar(
                                 content: Text('Voting has not started yet.'),
                               ),
                             );
