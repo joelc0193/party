@@ -23,18 +23,4 @@ class ApiService {
       throw Exception('Failed to create party');
     }
   }
-
-  Future<List<Song>> searchSongs(String query) async {
-    var response = await http.get(
-      Uri.parse('https://api.deezer.com/search?q=$query'),
-    );
-
-    if (response.statusCode == 200) {
-      var data = jsonDecode(response.body);
-      var items = data['data'] as List;
-      return items.map((item) => Song.fromJson(item)).toList();
-    } else {
-      throw Exception('Failed to search songs');
-    }
-  }
 }

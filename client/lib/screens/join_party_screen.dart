@@ -4,6 +4,8 @@ import '../models/party.dart';
 import 'party_screen.dart';
 
 class JoinPartyScreen extends StatefulWidget {
+  const JoinPartyScreen({super.key});
+
   @override
   JoinPartyScreenState createState() => JoinPartyScreenState();
 }
@@ -16,14 +18,14 @@ class JoinPartyScreenState extends State<JoinPartyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Join a Party'),
+        title: const Text('Join a Party'),
       ),
       body: Form(
         key: _formKey,
         child: Column(
           children: <Widget>[
             TextFormField(
-              decoration: InputDecoration(labelText: 'Party ID'),
+              decoration: const InputDecoration(labelText: 'Party ID'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter the party ID';
@@ -35,7 +37,7 @@ class JoinPartyScreenState extends State<JoinPartyScreen> {
               },
             ),
             ElevatedButton(
-              child: Text('Join Party'),
+              child: const Text('Join Party'),
               onPressed: () {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();

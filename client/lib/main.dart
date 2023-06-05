@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:party/models/song.dart';
 import 'screens/main_screen.dart'; // Make sure to use the correct path
 
 void main() {
-  runApp(PartyApp());
+  runApp(const PartyApp());
 }
 
 class PartyApp extends StatelessWidget {
+  const PartyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,7 +15,7 @@ class PartyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MainScreen(),
+      home: const MainScreen(),
     );
   }
 }

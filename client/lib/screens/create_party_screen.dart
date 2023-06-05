@@ -5,11 +5,13 @@ class CreatePartyScreen extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _partyNameController = TextEditingController();
 
+  CreatePartyScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create a Party'),
+        title: const Text('Create a Party'),
       ),
       body: Form(
         key: _formKey,
@@ -19,7 +21,7 @@ class CreatePartyScreen extends StatelessWidget {
 
             TextFormField(
               controller: _partyNameController,
-              decoration: InputDecoration(labelText: 'Party Name'),
+              decoration: const InputDecoration(labelText: 'Party Name'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter a party name';
@@ -38,7 +40,7 @@ class CreatePartyScreen extends StatelessWidget {
                   Navigator.pop(context);
                 }
               },
-              child: Text('Create Party'),
+              child: const Text('Create Party'),
             ),
           ],
         ),

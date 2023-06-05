@@ -3,18 +3,20 @@ import 'create_party_screen.dart';
 import 'join_party_screen.dart';
 
 class MainScreen extends StatelessWidget {
+  const MainScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Party App'),
+        title: const Text('Party App'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
-              child: Text('Create a Party'),
+              child: const Text('Create a Party'),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -23,11 +25,11 @@ class MainScreen extends StatelessWidget {
               },
             ),
             ElevatedButton(
-              child: Text('Join a Party'),
+              child: const Text('Join a Party'),
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => JoinPartyScreen()),
+                  MaterialPageRoute(builder: (context) => const JoinPartyScreen()),
                 );
               },
             ),
